@@ -44,28 +44,12 @@ else
   git clone https://github.com/flutter/flutter.git --quiet
 fi
 
-# Check if FLUTTER_VERSION variables is set.
-if [ -n "$FLUTTER_VERSION" ]; then
-  # Load bash variables from flutter --machine --version and read it like  $FLUTTER_VERSION variable.
-  flutter/bin/flutter --machine --version >flutter.json
-  FLUTTER_INSTALLED_VERSION=$(grep -o '"frameworkVersion": *"[^"]*' flutter.json | grep -o '[^"]*$')
-
-  # Check if the FLUTTER_VERSION is the same with the installed one.
-  if [ "$FLUTTER_VERSION" != "$FLUTTER_INSTALLED_VERSION" ]; then
-    print "Installing Flutter SDK version : $FLUTTER_VERSION"
-    flutter/bin/flutter version $FLUTTER_VERSION --quiet | indent
-  fi
-  rm flutter.json
-
-else
-
-  print "Running flutter upgrade command"
-  if [ "$channel" != "stable" ]; then
-    flutter/bin/flutter channel stable | indent
-  fi
-
-  flutter/bin/flutter upgrade --quiet | indent
+print "Running flutter upgrade command"
+if [ "$channel" != "stable" ]; then
+  flutter/bin/flutter channel stable | indent
 fi
+
+flutter/bin/flutter upgrade --quiet | indent
 
 print "Enabling Web support"
 flutter/bin/flutter config --enable-web --quiet | indent
