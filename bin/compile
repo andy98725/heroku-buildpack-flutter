@@ -44,26 +44,28 @@ else
   git clone https://github.com/flutter/flutter.git --quiet
 fi
 
-print "Running flutter upgrade command"
-if [ "$channel" != "stable" ]; then
-  flutter/bin/flutter channel stable | indent
+if [ -z "$channel" ]; then
+  channel="stable"
 fi
+print "Setting flutter channel to $channel"
+flutter/bin/flutter channel $channel | indent
 
-flutter/bin/flutter upgrade --quiet | indent
+print "Running flutter upgrade command"
+flutter/bin/flutter upgrade | indent
 
 print "Enabling Web support"
-flutter/bin/flutter config --enable-web --quiet | indent
+flutter/bin/flutter config --enable-web | indent
 
 print "Running flutter clean command."
-flutter/bin/flutter clean --quiet | indent
+flutter/bin/flutter clean | indent
 
 print "Getting packages from Flutter project"
-flutter/bin/flutter pub get --quiet | indent
+flutter/bin/flutter pub get | indent
 
 PATH="$PATH":"$(pwd)/flutter/bin/"
 
 if [ -z "$FLUTTER_BUILD" ]; then
-  FLUTTER_BUILD="flutter build web --release --quiet"
+  FLUTTER_BUILD="flutter build web --release"
 fi
 
 print "Compiling the project with $FLUTTER_BUILD"
@@ -110,6 +112,7 @@ else
   print "Getting dhtppd to run web service."
   mkdir -p $CACHE_DIR/.pub-cache/
   cp -R $PUB_CACHE/* $CACHE_DIR/.pub-cache/
+
 fi
 
 # Moving to the build, after running the compile. All will be deleted and removed to app directory.
