@@ -112,7 +112,7 @@ else
 
 fi
 print "Getting dhttpd to run web service."
-$BUILD_DIR/dart-sdk/bin/dart pub global activate -sgit https://github.com/diezep/dhttpd.git | indent
+$BUILD_DIR/dart-sdk/bin/dart pub global activate -sgit https://github.com/andy98725/dhttpd.git | indent
 
 # Moving to the build, after running the compile. All will be deleted and removed to app directory.
 # Copying the result, the files will be kept in storage.
